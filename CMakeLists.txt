@@ -14,9 +14,21 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE})
 
 
-add_executable(sample_matrix "./samples/sample_matrix.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/include/tmatrix.h" "${CMAKE_CURRENT_SOURCE_DIR}/include/tdynamicvector.h")
+add_executable(sample_matrix "./samples/sample_matrix.cpp" 
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tmatrix.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tdynamicvector.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tcompressedsparserow.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tcoordinatelist.h")
 #"${CMAKE_CURRENT_SOURCE_DIR}/gtest/gtest.h"
-add_executable(${PROJECT_NAME}_test "./test/test_main.cpp" "./test/test_tmatrix.cpp" "./test/test_tvector.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/include/tmatrix.h"  "${CMAKE_CURRENT_SOURCE_DIR}/include/tdynamicvector.h")
+add_executable(${PROJECT_NAME}_test "./test/test_main.cpp" 
+"./test/test_tmatrix.cpp" 
+"./test/test_tvector.cpp" 
+"./test/test_coordinatelist.cpp" 
+"./test/test_compressedsparserow.cpp" 
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tmatrix.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tdynamicvector.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tcompressedsparserow.h"
+"${CMAKE_CURRENT_SOURCE_DIR}/include/tcoordinatelist.h")
 
 set(TEST_NAME ${PROJECT_NAME}_test)
 add_library(gtest "${CMAKE_CURRENT_SOURCE_DIR}/gtest/gtest-all.cc" "${CMAKE_CURRENT_SOURCE_DIR}/gtest/gtest.h")

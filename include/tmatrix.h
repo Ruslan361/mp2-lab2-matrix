@@ -29,15 +29,16 @@ public:
       return !(*this == m);
   }
   // матрично-скалярные операции
-  TDynamicMatrix operator*(const T& val);
+  TDynamicMatrix operator*(const T& val) const;
 
   // матрично-векторные операции
-  TDynamicVector<T> operator*(const TDynamicVector<T>& v);
+  TDynamicVector<T> operator*(const TDynamicVector<T>& v) const;
+  TDynamicMatrix<T> operator+(const TDynamicVector<T>& v) const;
 
   // матрично-матричные операции
-  TDynamicMatrix operator+(const TDynamicMatrix& m);
-  TDynamicMatrix operator-(const TDynamicMatrix& m);
-  TDynamicMatrix operator*(const TDynamicMatrix& m);
+  TDynamicMatrix operator+(const TDynamicMatrix& m) const;
+  TDynamicMatrix operator-(const TDynamicMatrix& m) const;
+  TDynamicMatrix operator*(const TDynamicMatrix& m) const;
 
   //ввод/вывод
   friend std::istream& operator>>(std::istream& istr, TDynamicMatrix& v)
@@ -89,7 +90,7 @@ TDynamicMatrix<T>::TDynamicMatrix<T>(size_t s = 1) : TDynamicVector<TDynamicVect
         pMem[i] = TDynamicVector<T>(sz);
 }
 template <typename T>
-TDynamicMatrix<T> TDynamicMatrix<T>::operator+(const TDynamicMatrix<T>& m)
+TDynamicMatrix<T> TDynamicMatrix<T>::operator+(const TDynamicMatrix<T>& m) const
 {
     if (sz != m.sz) throw std::invalid_argument("You can not sum matrix with not equal sizes");
     TDynamicMatrix<T> res(sz);
@@ -100,7 +101,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator+(const TDynamicMatrix<T>& m)
     return res;
 }
 template <typename T>
-TDynamicMatrix<T> TDynamicMatrix<T>::operator-(const TDynamicMatrix<T>& m)
+TDynamicMatrix<T> TDynamicMatrix<T>::operator-(const TDynamicMatrix<T>& m) const
 {
     if (sz != m.sz) throw std::invalid_argument("You can not sum matrix with not equal sizes");
     TDynamicMatrix<T> res(sz);
@@ -111,7 +112,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator-(const TDynamicMatrix<T>& m)
     return res;
 }
 template <typename T>
-TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
+TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m) const
 {
     if (sz != m.sz) throw std::invalid_argument("You can not sum matrix with not equal sizes");
     TDynamicMatrix<T> res(sz);
@@ -130,7 +131,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m)
     return res;
 }
 template <typename T>
-TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const T& val)
+TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const T& val) const
 {
     TDynamicMatrix<T> res(sz);
     for (size_t i = 0; i < sz; i++)
@@ -140,7 +141,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const T& val)
     return res;
 }
 template <typename T>
-TDynamicVector<T> TDynamicMatrix<T>::operator*(const TDynamicVector<T>& v)
+TDynamicVector<T> TDynamicMatrix<T>::operator*(const TDynamicVector<T>& v) const
 {
     if (sz != v.size()) throw std::invalid_argument("You can not multiply matrix and vector with not equal sizes");
     TDynamicVector<T> res(sz);
@@ -154,5 +155,19 @@ TDynamicVector<T> TDynamicMatrix<T>::operator*(const TDynamicVector<T>& v)
         res[i] = sum;
     }
     return res;
+}
+template<typename T>
+TDynamicMatrix<T> TDynamicMatrix<T>::operator+(const TDynamicVector<T>& v) const
+{
+    if (sz != v.size()) throw std::invalid_argument("You can not sum matrix and vector with not equal sizes");
+    TDynamicMatrix<T> result(size());
+    for (size_t i = 0; i < result.size(); i++)
+    {
+        for (size_t j = 0; j < result.pMem[i].size(); j++)
+        {
+            result.pMem[i][j] = pMem[i][j] + v[i];
+        }
+    }
+    return result;
 }
 #endif

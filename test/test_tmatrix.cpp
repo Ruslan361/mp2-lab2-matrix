@@ -311,3 +311,27 @@ TEST(TDynamicMatrix, cant_multiply_matrix_with_vector_not_equal_size)
 	TDynamicVector<int> v(10);
 	ASSERT_ANY_THROW(m1 * v);
 }
+TEST(TDynamicMatrix, is_addition_matrix_with_vector_correct)
+{
+	TDynamicMatrix<int> m1(3);
+	TDynamicVector<int> v(3);
+	for (size_t i = 0; i < 3; i++)
+	{
+		v[i] = i;
+	}
+	for (size_t i = 0; i < 3; i++)
+	{
+		m1[i] = v;
+	}
+	//std::cout << std::endl << m1 << std::endl << std::endl;
+	TDynamicMatrix<int> m2 = m1 + v;
+	TDynamicMatrix<int> answer(3);
+	for (size_t i = 0; i < answer.size(); i++)
+	{
+		for (size_t j = 0; j < answer.size(); j++) {
+			answer[i][j] = i + j;
+		}
+	}
+	//std::cout << std::endl << m2 << std::endl << std::endl;
+	ASSERT_EQ(m2, answer);
+}

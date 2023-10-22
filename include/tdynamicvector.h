@@ -76,14 +76,14 @@ public:
       return !(*this == v);
   }
   // скалярные операции
-  TDynamicVector operator+(T val);
-  TDynamicVector operator-(T val);
-  TDynamicVector operator*(T val);
+  TDynamicVector operator+(T val) const;
+  TDynamicVector operator-(T val) const;
+  TDynamicVector operator*(T val) const;
 
   // векторные операции
-  TDynamicVector operator+(const TDynamicVector& v);
-  TDynamicVector operator-(const TDynamicVector& v);
-  T operator*(const TDynamicVector& v); //noexcept(noexcept(T()));
+  TDynamicVector operator+(const TDynamicVector& v) const;
+  TDynamicVector operator-(const TDynamicVector& v) const;
+  T operator*(const TDynamicVector& v) const; //noexcept(noexcept(T()));
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
   {
@@ -138,7 +138,7 @@ TDynamicVector<T>::TDynamicVector<T>(size_t size = 1) : sz(size)
         throw std::out_of_range("Vector size should be greater than zero");
     if (sz > MAX_VECTOR_SIZE)
         throw std::out_of_range("Vector size should be less than MAX_VECTOR_SIZE");
-    pMem = new T[sz];// {}; // У типа T д.б. констуктор по умолчанию
+    pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
 }
 template <typename T>
 TDynamicVector<T>::TDynamicVector<T>(T* arr, size_t s) : sz(s)
@@ -155,7 +155,7 @@ TDynamicVector<T>::TDynamicVector<T>(const TDynamicVector<T>& v)
     std::copy(v.pMem, v.pMem + sz, pMem);
 }
 template <typename T>
-TDynamicVector<T> TDynamicVector<T>::operator+(T val)
+TDynamicVector<T> TDynamicVector<T>::operator+(T val) const
 {
     TDynamicVector<T> res(sz);
     for (size_t i = 0; i < sz; i++)
@@ -165,7 +165,7 @@ TDynamicVector<T> TDynamicVector<T>::operator+(T val)
     return res;
 }
 template <typename T>
-TDynamicVector<T> TDynamicVector<T>::operator-(T val)
+TDynamicVector<T> TDynamicVector<T>::operator-(T val) const
 {
     TDynamicVector<T> res(sz);
     for (size_t i = 0; i < sz; i++)
@@ -175,7 +175,7 @@ TDynamicVector<T> TDynamicVector<T>::operator-(T val)
     return res;
 }
 template <typename T>
-TDynamicVector<T> TDynamicVector<T>::operator*(T val)
+TDynamicVector<T> TDynamicVector<T>::operator*(T val) const
 {
     TDynamicVector<T> res(sz);
     for (size_t i = 0; i < sz; i++)
@@ -185,7 +185,7 @@ TDynamicVector<T> TDynamicVector<T>::operator*(T val)
     return res;
 }
 template <typename T>
-TDynamicVector<T> TDynamicVector<T>::operator+(const TDynamicVector<T>& v)
+TDynamicVector<T> TDynamicVector<T>::operator+(const TDynamicVector<T>& v) const
 {
     if (v.sz != sz) throw std::invalid_argument("Vectors have not equal sizes");
     TDynamicVector<T> res(sz);
@@ -196,7 +196,7 @@ TDynamicVector<T> TDynamicVector<T>::operator+(const TDynamicVector<T>& v)
     return res;
 }
 template <typename T>
-TDynamicVector<T> TDynamicVector<T>::operator-(const TDynamicVector<T>& v)
+TDynamicVector<T> TDynamicVector<T>::operator-(const TDynamicVector<T>& v) const
 {
     if (v.sz != sz) throw std::invalid_argument("Vectors have not equal sizes");
     TDynamicVector<T> res(sz);
@@ -207,10 +207,10 @@ TDynamicVector<T> TDynamicVector<T>::operator-(const TDynamicVector<T>& v)
     return res;
 }
 template <typename T>
-T TDynamicVector<T>::operator*(const TDynamicVector<T>& v) //noexcept(noexcept(T()))
+T TDynamicVector<T>::operator*(const TDynamicVector<T>& v) const //noexcept(noexcept(T()))
 {
     if (v.sz != sz) throw std::invalid_argument("Vectors have not equal sizes");
-    T res = 0;
+    T res = {};
     for (size_t i = 0; i < sz; i++)
     {
         res += pMem[i] * v.pMem[i];
